@@ -298,9 +298,9 @@
             </div>`;
             $("#product-gallery").append(html);
         },
-        // complete: function (file) {
-        //     this.removeFile(file);
-        // }
+        //complete: function (file) {
+         //   this.removeFile(file);
+       // }
     });
 
     function deleteImage (id) {

@@ -72,9 +72,7 @@ class ProductController extends Controller
                     $imageName = $product->id .'-'.$productImage->id.'-'.time().'.'.$ext;
                     $productImage->image = $imageName;
                     $productImage->save();
-
                     // generate products thumb
-
 
                     // large image
                     $sourcePath = public_path()."/temp/".$tempImageInfo->name;
@@ -85,8 +83,7 @@ class ProductController extends Controller
                     });
                     $image->save($destPath);
 
-                    // small image
-                  
+                    // small image            
                     $destPath = public_path().'/uploads/product/small/'.$imageName;
                     $image = Image::make($sourcePath);
                     $image->fit(300,300);
