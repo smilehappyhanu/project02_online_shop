@@ -9,6 +9,7 @@
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/fontawesome-free/css/all.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.css')}}">
+		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote.min.css') }}">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/adminlte.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css')}}">
@@ -29,6 +30,7 @@
 		<script src="{{ asset('admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 		<!-- AdminLTE App -->
 		<script src="{{ asset('admin-assets/js/adminlte.min.js')}}"></script>
+		<script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js') }}"></script>
 		<script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="{{ asset('admin-assets/js/demo.js')}}"></script>
@@ -37,7 +39,12 @@
                 headers: {
                     'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
                 }
-            })
+            });
+			$(document).ready(function(){
+				$(".summernote").summernote({
+					height: '300px'
+				});
+			});
         </script>
         @yield('js')
 	</body>
