@@ -110,4 +110,70 @@ class ProductController extends Controller
             ]);
         }
     }
+
+    public function edit ($id, Request $request) {
+        $product = Product::find($id);
+    
+        if(empty($product)) {
+            $request->session()->flash('error','Product not found');
+            return redirect()->route('products.index');
+        }
+        // Fetch product image
+        $productImages = ProductImage::where('product_id',$product->id)->get();
+
+        $categories = Category::orderBy('name','ASC')->get();
+        $subCategories = SubCategory::where('category_id',$product->category_id)->get();
+        $brands = Brand::orderBy('name','ASC')->get();
+
+        return view('admin.products.edit',compact('product','categories','subCategories','brands','productImages'));
+    }
+
+    public function update ($id,Request $request) {
+        $product = Product::find($id);
+
+        $rules = [
+            'title'             => 'required',
+            'slug'              => 'required|unique:products,slug,'.$product->id.',id',
+            'price'             => 'required|numeric',
+            'sku'               => 'required|unique:products,sku,'.$product->id.',id',
+            'track_qty'         => 'required|in:Yes,No',
+            'category'          => 'required',
+            'is_featured'       => 'required|in:Yes,No'
+        ];
+        if(!empty($request->track_qty) && $request->track_qty = 'Yes') {
+            $rules['qty'] = 'required|numeric';
+        }
+        $validator = Validator::make($request->all(),$rules);
+        if ($validator->passes()) {
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->compare_price;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_qty = $request->track_qty;
+            $product->qty = $request->qty;
+            $product->status = $request->status;
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->sub_category;
+            $product->brand_id = $request->brand;
+            $product->is_featured = $request->is_featured;
+            $product->save();
+
+            // Save product gallery
+            
+            $request->session()->flash('success','Product updated successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'Product updated successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
 }
