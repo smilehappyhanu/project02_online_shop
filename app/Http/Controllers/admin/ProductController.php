@@ -16,8 +16,13 @@ use App\Models\TempImage;
 
 class ProductController extends Controller
 {
-    public function index () {
-
+    public function index (Request $request) {
+        $products = Product::latest('id')->with('product_images');
+        if($request->get('keyword_search') != '') {
+            $products = $products->where('title','like','%'.$request->keyword_search.'%');
+        }
+        $products = $products->paginate(10);
+        return view('admin.products.list',compact('products'));
     }
 
     public function create () {
