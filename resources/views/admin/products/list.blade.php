@@ -137,7 +137,7 @@
                 if(response["status"] == true) {
                     window.location.href = "{{route('products.index') }}";
                 } else {
-                    window.location.href = "{{route'products.index')}}";
+                    window.location.href = "{{route('products.index')}}";
                 }
             },
 

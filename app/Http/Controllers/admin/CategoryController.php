@@ -38,7 +38,8 @@ class CategoryController extends Controller
             $category = $this->category->create([
                 'name' => $request->name,
                 'slug' => $request->slug,
-                'status' => $request->status
+                'status' => $request->status,
+                'showHome' => $request->showHome,
             ]);
             // save image here
             if(!empty($request->image_id)) {
@@ -98,7 +99,8 @@ class CategoryController extends Controller
             $category = $this->category->find($categoryId)->update([
                 'name' => $request->name,
                 'slug' => $request->slug,
-                'status' => $request->status
+                'status' => $request->status,
+                'showHome' => $request->showHome
             ]);
             $category = $this->category->find($categoryId);
             $oldImage = $category->image;
