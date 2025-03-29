@@ -12,6 +12,8 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ProductImageController;
+use App\Http\Controllers\FrontController;
+
 use Illuminate\Http\Request;
 
 
@@ -26,9 +28,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+// Route front
+
+Route::get('/',[FrontController::class,'index'])->name('front.home');
 
 // Route admin
 
