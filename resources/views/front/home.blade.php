@@ -139,7 +139,7 @@
                     <div class="card product-card">
                         <div class="product-image position-relative">
                             @if(!empty($productImage->image))
-                            <a href="" class="product-img"><img src="{{asset('uploads/product/small/'.$productImage->image)}}" class="card-img-top"></a>
+                            <a href="{{ route('front.product',$featuredProduct->slug) }}" class="product-img"><img src="{{asset('uploads/product/small/'.$productImage->image)}}" class="card-img-top"></a>
                             @else 
                             <a href="" class="product-img"><img src="{{asset('admin-assets/img/default-150x150.png')}}" class="card-img-top"></a>
                             @endif         
