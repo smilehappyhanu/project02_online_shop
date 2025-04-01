@@ -210,12 +210,27 @@
                                     <p class="error"></p>                                  
                                 </div>
                             </div>
-                        </div>                                 
+                        </div> 
+                        <div class="card mb-3">
+                            <div class="card-body">	
+                                <h2 class="h4 mb-3">Related product</h2>
+                                <div class="mb-3">
+                                    <select multiple name="related_products[]" id="related_products" class="related_products w-100">
+                                        @if(!empty($relatedProducts))
+                                            @foreach($relatedProducts as $relatedProduct)
+                                                <option selected value="{{$relatedProduct->id }}">{{$relatedProduct->title}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <p class="error"></p>                                  
+                                </div>
+                            </div>
+                        </div>                                     
                     </div>
                 </div>
                 
                 <div class="pb-5 pt-3">
-                    <button class="btn btn-primary">Create</button>
+                    <button class="btn btn-primary">Update</button>
                     <a href="{{route('products.index')}}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </form>
@@ -357,6 +372,21 @@
         })
     }     
 }
+
+$('.related_products').select2({
+    ajax: {
+        url: '{{ route("products.getProducts") }}',
+        dataType: 'json',
+        tags: true,
+        multiple: true,
+        minimumInputLength: 3,
+        processResults: function (data) {
+            return {
+                results: data.tags
+            };
+        }
+    }
+}); 
 
 </script>
 
