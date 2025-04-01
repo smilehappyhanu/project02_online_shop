@@ -5,7 +5,6 @@
         <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <!-- <img src="images/carousel-1.jpg" class="d-block w-100" alt=""> -->
 
                     <picture>
                         <source media="(max-width: 799px)" srcset="{{asset('front-assets/images/carousel-1-m.jpg')}}" />
@@ -146,7 +145,7 @@
                             <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
 
                             <div class="product-action">
-                                <a class="btn btn-dark" href="#">
+                                <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$featuredProduct->id}})">
                                     <i class="fa fa-shopping-cart"></i> Add To Cart
                                 </a>                            
                             </div>
@@ -190,7 +189,7 @@
                             <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
 
                             <div class="product-action">
-                                <a class="btn btn-dark" href="#">
+                                <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$latestProduct->id}})">
                                     <i class="fa fa-shopping-cart"></i> Add To Cart
                                 </a>                            
                             </div>

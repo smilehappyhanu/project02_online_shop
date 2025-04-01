@@ -29,6 +29,7 @@
 	<meta name="twitter:image" content="" />
 	<meta name="twitter:image:alt" content="" />
 	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	
 
 	<link rel="stylesheet" type="text/css" href="{{asset('front-assets/css/slick.css')}}" />
@@ -75,6 +76,35 @@ function myFunction() {
     navbar.classList.remove("sticky");
   }
 }
+
+$.ajaxSetup({
+	headers: {
+		'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+	}
+});
+
+	// AddToCart function
+	function addToCart(id) {
+		$.ajax({
+			url: '{{route("front.addToCart")}}',
+			type: 'POST',
+			data: {
+				'id': id,
+			},
+			dataType: 'json',
+			success: function (response) {
+				if(response.status == true) {
+					window.location.href = "{{ route('front.cart') }}";
+				} else {
+					alert(response.message);
+				}
+			},
+			error: function () {
+
+			}
+		});
+	}
+  
 </script>
 @yield('customJs')
 </body>
