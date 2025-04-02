@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AuthController;
 
 use Illuminate\Http\Request;
 
@@ -43,7 +44,19 @@ Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.add
 Route::post('/update-cart',[CartController::class,'updateCart'])->name('front.updateCart');
 Route::post('/delete-item-cart',[CartController::class,'deleteItemCart'])->name('front.deleteItemCart');
 
+Route::group(['prefix' => 'account'],function(){
+    Route::group(['middleware' => 'guest'],function(){
+        Route::get('/register',[AuthController::class,'register'])->name('account.register');
+        Route::post('/handle-register',[AuthController::class,'handleRegister'])->name('account.handleRegister');
+        Route::get('/login',[AuthController::class,'login'])->name('account.login');
+    });
 
+    Route::group(['middleware' => 'auth'],function(){
+        
+
+    });
+}
+);
 
 // Route admin
 
