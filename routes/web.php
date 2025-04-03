@@ -44,6 +44,9 @@ Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.add
 Route::post('/update-cart',[CartController::class,'updateCart'])->name('front.updateCart');
 Route::post('/delete-item-cart',[CartController::class,'deleteItemCart'])->name('front.deleteItemCart');
 Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
+Route::post('/handleCheckout',[CartController::class,'handleCheckout'])->name('front.handleCheckout');
+Route::get('/thanks/{orderId}',[CartController::class,'thankyou'])->name('front.thankyou');
+
 
 Route::group(['prefix' => 'account'],function(){
     Route::group(['middleware' => 'guest'],function(){

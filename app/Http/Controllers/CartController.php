@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\Product;
 use App\Models\Country;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\CustomerAddress;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -117,10 +121,104 @@ class CartController extends Controller
              if(!session()->has('url.intended')){
                  session(['url.intended' => url()->current()]);
              }
-            redirect()->route('account.login');
+            return redirect()->route('account.login');
         } 
+        $customerAddress = CustomerAddress::where('user_id',Auth::user()->id)->first();
         session()->forget('url.intended');
         $countries = Country::orderBy('name','ASC')->get();
-        return view('front.checkout',compact('countries'));
+        return view('front.checkout',compact('countries','customerAddress'));
+    }
+
+    public function handleCheckout (Request $request) {
+        $validator = Validator::make($request->all(),[
+            'first_name' => 'required|min:3',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'country' => 'required',
+            'address' => 'required|max:100',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'mobile' => 'required',
+        ]);
+        if($validator->passes()){
+            $user = Auth::user(); // get user id
+            // save to customer_address
+            CustomerAddress::updateOrCreate(
+                ['user_id' => $user->id ],
+                [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'mobile' => $request->mobile,
+                    'country_id' => $request->country,
+                    'address' => $request->address,
+                    'apartment' => $request->apartment,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip' => $request->zip,
+                ]
+            );
+            // save orders table
+            if($request->payment_method == 'cod') {
+                $shipping = 0;
+                $discount = 0;
+                $subtotal = Cart::subtotal(2,'.','');
+                $grandtotal = $subtotal+$shipping;
+
+                $order = new Order;
+                $order->subtotal = $subtotal;
+                $order->shipping = $shipping;
+                $order->grand_total = $grandtotal;
+                $order->first_name = $request->first_name;
+                $order->last_name = $request->last_name;
+                $order->email = $request->email;
+                $order->mobile = $request->mobile;
+                $order->country_id = $request->country;
+                $order->address = $request->address;
+                $order->apartment = $request->apartment;
+                $order->city = $request->city;
+                $order->state = $request->state;
+                $order->zip = $request->zip;
+                $order->user_id = $user->id;
+                $order->notes = $request->order_notes;
+                $order->save();
+
+                // save order_items table
+                foreach (Cart::content() as $item) {
+                    $orderItem = new OrderItem;
+                    $orderItem->product_id = $item->id;
+                    $orderItem->order_id = $order->id;
+                    $orderItem->name = $item->name;
+                    $orderItem->qty = $item->qty;
+                    $orderItem->price = $item->price;
+                    $orderItem->total = $item->qty*$item->price;
+                    $orderItem->save();
+                }
+                Cart::destroy();
+                session()->flash('success','You have ordered successfully.');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Order saved successfully.',
+                    'orderId' => $order->id
+                ]);
+
+            } else {
+
+            }
+
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please fix the errors',
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function thankyou($id) {
+        $id = $id;
+        return view('front.thanks',compact('id'));
     }
 }
