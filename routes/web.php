@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ProductImageController;
+use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -112,13 +113,20 @@ Route::group(['prefix' => 'admin'],function(){
         Route::delete('/products/{product}',[ProductController::class,'destroy'])->name('products.delete');
         Route::get('/get-products',[ProductController::class,'getProducts'])->name('products.getProducts');
 
-
-
         // Image routes
         Route::post('/upload-temp-image',[TempImagesController::class,'create'])->name('temp-images.create');
         Route::post('/product-images/update',[ProductImageController::class,'update'])->name('product-images.update');
         Route::delete('/product-images/{image}',[ProductImageController::class,'destroy'])->name('product-images.delete');
 
+        // Shipping routes
+        Route::get('/shipping/create',[ShippingController::class,'create'])->name('shipping.create');
+        Route::post('/shipping/store',[ShippingController::class,'store'])->name('shipping.store');
+        Route::get('/shipping/{id}/edit',[ShippingController::class,'edit'])->name('shipping.edit');
+        Route::put('/shipping/{id}',[ShippingController::class,'update'])->name('shipping.update');
+        Route::delete('/shipping/{id}/delete',[ShippingController::class,'destroy'])->name('shipping.delete');
+
+
+        // Common routes
         Route::get('/getSlug',function(Request $request){
             $slug = '';
             if(!empty($request->title)) {

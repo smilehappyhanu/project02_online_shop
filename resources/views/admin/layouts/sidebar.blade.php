@@ -45,8 +45,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <!-- <i class="nav-icon fas fa-tag"></i> -->
+                    <a href="{{ route('shipping.create') }}" class="nav-link">
                         <i class="fas fa-truck nav-icon"></i>
                         <p>Shipping</p>
                     </a>
