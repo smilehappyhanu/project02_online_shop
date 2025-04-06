@@ -56,6 +56,7 @@
                                                 @endforeach
                                                 @endif
                                             </select>
+                                            <p></p>
                                         </div>            
                                     </div>
 
@@ -132,11 +133,11 @@
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
-                                    <div class="h6"><strong>$0</strong></div>
+                                    <div class="h6"><strong id="shippingAmount">{{ ($totalShippingCharge != null) ? (number_format($totalShippingCharge,2)) : 0 }}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2 summery-end">
                                     <div class="h5"><strong>Total</strong></div>
-                                    <div class="h5"><strong>{{Cart::subtotal()}}</strong></div>
+                                    <div class="h5"><strong id="grandTotal">{{($grandtotal != null) ? (number_format($grandtotal,2)) : 0}}</strong></div>
                                 </div>                            
                             </div>
                         </div>   
@@ -230,7 +231,7 @@
                         $("#email").removeClass('is-invalid').siblings("p").removeClass('invalid-feedback').html('');
                     }
 
-                    if(errors.first_name) {
+                    if(errors.country) {
                         $("#country").addClass('is-invalid').siblings("p").addClass('invalid-feedback').html(errors.country);
                     } else {
                         $("#country").removeClass('is-invalid').siblings("p").removeClass('invalid-feedback').html('');
@@ -275,5 +276,25 @@
             }
         })
     });
+
+    $("#country").change(function(){
+        $.ajax({
+            url: '{{ route("front.getOrderSummery") }}',
+            type: 'post',
+            data: {
+                'country_id' : $(this).val()
+            },
+            dataType: 'json',
+            success: function (response) {
+                if(response.status == true) {
+                    $("#shippingAmount").html(response.shippingCharge);
+                    $("#grandTotal").html(response.grandtotal);
+                }
+            },
+            error: function () {
+
+            }
+        })
+    })
 </script>
 @endsection
