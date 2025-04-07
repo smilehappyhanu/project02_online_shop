@@ -11,12 +11,13 @@ use App\Models\DiscountCoupon;
 class DiscountCouponController extends Controller
 {
     public function index (Request $request) {
-        $discountCoupons = DiscountCoupon::get();
+        $discountCoupons = DiscountCoupon::latest('id');
 
         if(!empty($request->get('keyword_search'))) {
             $discountCoupons = $discountCoupons->where('name','like','%'.$request->keyword_search.'%');
-           
         }
+        $discountCoupons = $discountCoupons->paginate(10);
+
         return view('admin.coupon.list',compact('discountCoupons'));
 
     }
