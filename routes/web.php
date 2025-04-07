@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ShippingController;
+use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -125,6 +126,13 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/shipping/{id}/edit',[ShippingController::class,'edit'])->name('shipping.edit');
         Route::put('/shipping/{id}',[ShippingController::class,'update'])->name('shipping.update');
         Route::delete('/shipping/{id}/delete',[ShippingController::class,'destroy'])->name('shipping.delete');
+
+
+        // Coupon routes
+        Route::get('/coupon',[DiscountCouponController::class,'index'])->name('coupons.index');
+        Route::get('/coupon/create',[DiscountCouponController::class,'create'])->name('coupons.create');
+        Route::post('/coupon/store',[DiscountCouponController::class,'store'])->name('coupons.store');
+
 
 
         // Common routes
