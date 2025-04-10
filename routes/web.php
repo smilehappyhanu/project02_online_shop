@@ -18,6 +18,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -132,6 +133,9 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/coupon',[DiscountCouponController::class,'index'])->name('coupons.index');
         Route::get('/coupon/create',[DiscountCouponController::class,'create'])->name('coupons.create');
         Route::post('/coupon/store',[DiscountCouponController::class,'store'])->name('coupons.store');
+        Route::get('/coupon/{coupon}/edit',[DiscountCouponController::class,'edit'])->name('coupons.edit');
+        Route::put('/coupon/{coupon}',[DiscountCouponController::class,'update'])->name('coupons.update');
+        Route::delete('/coupon/{coupon}/delete',[DiscountCouponController::class,'destroy'])->name('coupons.delete');
 
 
 
