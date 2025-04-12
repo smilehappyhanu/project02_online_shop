@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\DiscountCouponController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -140,6 +141,11 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/coupon/{coupon}/edit',[DiscountCouponController::class,'edit'])->name('coupons.edit');
         Route::put('/coupon/{coupon}',[DiscountCouponController::class,'update'])->name('coupons.update');
         Route::delete('/coupon/{coupon}/delete',[DiscountCouponController::class,'destroy'])->name('coupons.delete');
+
+        // Order routes
+        Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
+        Route::get('/orders/detail/{id}',[OrderController::class,'detail'])->name('orders.detail');
+
 
 
 
