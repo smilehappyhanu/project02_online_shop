@@ -271,6 +271,10 @@ class CartController extends Controller
                     $orderItem->total = $item->qty*$item->price;
                     $orderItem->save();
                 }
+
+                // Send mail order for customer
+                orderEmail($order->id);
+
                 Cart::destroy();
                 session()->forget('discount_code');
                 session()->flash('success','You have ordered successfully.');
