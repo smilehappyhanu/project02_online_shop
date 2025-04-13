@@ -145,6 +145,7 @@ Route::group(['prefix' => 'admin'],function(){
         // Order routes
         Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
         Route::get('/orders/detail/{id}',[OrderController::class,'detail'])->name('orders.detail');
+        Route::post('/orders/change-status/{id}',[OrderController::class,'changeOrderStatus'])->name('orders.changeOrderStatus');
 
 
 

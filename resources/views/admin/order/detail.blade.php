@@ -16,6 +16,7 @@
 
 <section class="content">
     <!-- Default box -->
+    @include('admin.message')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-9">
@@ -31,13 +32,10 @@
                                 Phone: {{$order->mobile}}<br>
                                 Email: {{$order->email}}
                             </address>
-                            </div>
-                            
+                            </div>            
                             
                             
                             <div class="col-sm-4 invoice-col">
-                                <b>Invoice #007612</b><br>
-                                <br>
                                 <b>Order ID:</b> {{$order->id}}<br>
                                 <b>Total:</b> {{number_format($order->grand_total)}}<br>
                                 <b>Status:</b> 
@@ -45,10 +43,18 @@
                                         <span class="text-danger">Pending</span>
                                     @elseif($order->status == 'shipped')
                                         <span class="text-info">Shipped</span>
-                                    @else
+                                    @elseif($order->status == 'delivered')
                                         <span class="text-success">Delivered</span>
+                                    @else
+                                        <span class="text-warning">Canceled</span>
                                     @endif
                                 <br>
+                                <b>Shipped date: </b>
+                                    @if(!empty($order->status))
+                                       {{ \Carbon\Carbon::parse($order->shipped_date)->format('d M, Y') }}
+                                    @else
+                                        N/A
+                                    @endif
                             </div>
                         </div>
                     </div>
@@ -97,19 +103,27 @@
             </div>
             <div class="col-md-3">
                 <div class="card">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">Order Status</h2>
-                        <div class="mb-3">
-                            <select name="status" id="status" class="form-control">
-                                <option value="" {{ $order->status == 'pending' ? 'selected' : ''}}>Pending</option>
-                                <option value="" {{ $order->status == 'shipped' ? 'selected' : ''}}>Shipped</option>
-                                <option value="" {{ $order->status == 'delivered' ? 'selected' : ''}}>Delivered</option>
-                            </select>
+                    <form action="" method="POST" name="formOrderChangeStatus" id="formOrderChangeStatus">
+                        <div class="card-body">
+                            <h2 class="h4 mb-3">Order Status</h2>
+                            <div class="mb-3">
+                                <select name="status" id="status" class="form-control">
+                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : ''}}>Pending</option>
+                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : ''}}>Shipped</option>
+                                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : ''}}>Delivered</option>
+                                    <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : ''}}>Canceled</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="shipped_date">Shipped Date</label>
+                                <input type="text" class="form-control" id="shipped_date" name="shipped_date" value="{{ $order->shipped_date }}" placeholder="Shipped Date">
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary" type="submit">Update</button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <button class="btn btn-primary">Update</button>
-                        </div>
-                    </div>
+                    </form>
+                    
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -121,7 +135,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <button class="btn btn-primary">Send</button>
+                            <button class="btn btn-primary" type="submit">Send</button>
                         </div>
                     </div>
                 </div>
@@ -130,4 +144,31 @@
     </div>
     <!-- /.card -->
 </section>
+@endsection
+
+@section('js')
+<script>
+     $(document).ready(function(){
+        $('#shipped_date').datetimepicker({
+            // options here
+            format:'Y-m-d H:i:s',
+        });
+    });
+
+    $("#formOrderChangeStatus").submit(function(event){
+        event.preventDefault();
+        $.ajax({
+            url:'{{ route("orders.changeOrderStatus",$order->id) }}',
+            type: 'post',
+            data: $(this).serializeArray(),
+            dataType: 'json',
+            success: function(response) {
+                window.location.href = "{{ route('orders.detail',$order->id) }}";
+            },
+            error: function() {
+
+            }
+        })
+    })
+</script>
 @endsection
