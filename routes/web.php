@@ -38,9 +38,7 @@ use Illuminate\Http\Request;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/test', function () {
-    orderEmail(11);
-});
+
 // Route front
 
 Route::get('/',[FrontController::class,'index'])->name('front.home');
@@ -149,6 +147,7 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
         Route::get('/orders/detail/{id}',[OrderController::class,'detail'])->name('orders.detail');
         Route::post('/orders/change-status/{id}',[OrderController::class,'changeOrderStatus'])->name('orders.changeOrderStatus');
+        Route::post('/orders/send-email/{id}',[OrderController::class,'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
 
 

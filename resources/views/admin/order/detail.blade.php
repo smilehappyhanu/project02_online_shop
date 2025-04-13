@@ -126,18 +126,21 @@
                     
                 </div>
                 <div class="card">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">Send Inovice Email</h2>
-                        <div class="mb-3">
-                            <select name="status" id="status" class="form-control">
-                                <option value="">Customer</option>                                                
-                                <option value="">Admin</option>
-                            </select>
+                    <form action="" method="POST" name="sendInvoiceEmail" id="sendInvoiceEmail">
+                        <div class="card-body">
+                            <h2 class="h4 mb-3">Send Invoice Email</h2>
+                            <div class="mb-3">
+                                <select name="userType" id="userType" class="form-control">
+                                    <option value="customer">Customer</option>                                                
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary" type="submit">Send</button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <button class="btn btn-primary" type="submit">Send</button>
-                        </div>
-                    </div>
+                    </form>
+                    
                 </div>
             </div>
         </div>
@@ -157,18 +160,38 @@
 
     $("#formOrderChangeStatus").submit(function(event){
         event.preventDefault();
-        $.ajax({
-            url:'{{ route("orders.changeOrderStatus",$order->id) }}',
-            type: 'post',
-            data: $(this).serializeArray(),
-            dataType: 'json',
-            success: function(response) {
-                window.location.href = "{{ route('orders.detail',$order->id) }}";
-            },
-            error: function() {
+        if(confirm('Are you want to sure to change status')) { 
+            $.ajax({
+                url:'{{ route("orders.changeOrderStatus",$order->id) }}',
+                type: 'post',
+                data: $(this).serializeArray(),
+                dataType: 'json',
+                success: function(response) {
+                    window.location.href = "{{ route('orders.detail',$order->id) }}";
+                },
+                error: function() {
 
-            }
-        })
-    })
+                }
+            })
+        }     
+    });
+
+    $("#sendInvoiceEmail").submit(function(event){
+        event.preventDefault();
+        if(confirm('Are you sure you want to send email')) {
+            $.ajax({
+                url:'{{ route("orders.sendInvoiceEmail",$order->id) }}',
+                type: 'post',
+                data: $(this).serializeArray(),
+                dataType: 'json',
+                success: function(response) {
+                    window.location.href = "{{ route('orders.detail',$order->id) }}";
+                },
+                error: function() {
+
+                }
+            })
+        }
+    });
 </script>
 @endsection
