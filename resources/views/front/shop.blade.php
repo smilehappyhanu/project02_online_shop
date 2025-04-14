@@ -202,6 +202,12 @@
 
         // Price range filter
         url += '&price_min=' + slider.result.from + '&price_max=' + slider.result.to;
+
+        // Input keyword search
+        var keywordSearch = $("#search").val();
+        if(keywordSearch.length > 0) {
+            url += '&search=' + keywordSearch;
+        }
         
         // Sorting
         url += '&sort=' + $("#sort").val();

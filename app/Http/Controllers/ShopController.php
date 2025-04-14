@@ -39,6 +39,11 @@ class ShopController extends Controller
             $brandsArray = explode(',',$request->get('brand'));
             $products = $products->whereIn('brand_id',$brandsArray);
         }
+
+        if(!empty($request->get('search'))) {
+            $products = $products->where('title','like','%'.$request->get("search").'%');
+        }
+
         if($request->get('price_min') != '' && $request->get('price_max') != '') {
             if($request->get('price_max') == 1000 ) {
                 $products = $products->whereBetween('price',[intval($request->get('price_min')),1000000]);
