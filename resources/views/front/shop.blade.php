@@ -110,10 +110,10 @@
                                     @else
                                     <a href="" class="product-img"><img class="card-img-top" src="{{asset('/admin-assets/img/default-150x150.png')}}" alt=""></a>
                                     @endif
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
+                                    <a class="whishlist" href="javascript:void(0);" onclick="addToWishlist('{{ $product->id }}')"><i class="far fa-heart"></i></a>                            
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$product->id}})">
+                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart('{{$product->id}}')">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>                            
                                     </div>
@@ -146,16 +146,16 @@
 @section('customJs')
 <script>
     rangeSlider = $(".js-range-slider").ionRangeSlider({
-        type: "double",
-        grid: true,
-        min: 0,
-        max: 1000,
-        from: {{$priceMin}},
-        to: {{$priceMax}},
-        step: 10,
-        skin: 'round',
-        prefix: "$",
-        max_postfix: "+",
+        'type': "double",
+        'grid': true,
+        'min': 0,
+        'max': 1000,
+        'from': '{{$priceMin}}',
+        'to': '{{$priceMax}}',
+        'step': 10,
+        'skin': 'round',
+        'prefix': "$",
+        'max_postfix': "+",
         onFinish: function() {
             apply_filters();
         }

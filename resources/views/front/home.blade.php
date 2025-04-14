@@ -142,7 +142,7 @@
                             @else 
                             <a href="" class="product-img"><img src="{{asset('admin-assets/img/default-150x150.png')}}" class="card-img-top"></a>
                             @endif         
-                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
+                            <a class="whishlist" href="javascript:void(0);" onclick="addToWishlist('{{ $featuredProduct->id }}')"><i class="far fa-heart"></i></a>                            
 
                             <div class="product-action">
                                 <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart('{{$featuredProduct->id}}')">
@@ -186,7 +186,7 @@
                             @else 
                             <a href="" class="product-img"><img src="{{asset('admin-assets/img/default-150x150.png')}}" class="card-img-top"></a>
                             @endif    
-                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
+                            <a class="whishlist" href="javascript:void(0);" onclick="addToWishlist('{{$latestProduct->id}}')"><i class="far fa-heart"></i></a>                            
 
                             <div class="product-action">
                                 <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart('{{$latestProduct->id}}')">

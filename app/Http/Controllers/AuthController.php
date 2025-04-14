@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +56,7 @@ class AuthController extends Controller
         if($validator->passes()){
             if(Auth::attempt(['email' => $request->email,'password' => $request->password],$request->get('remember'))) {
                 if(session()->has('url.intended')){
-                     redirect(session()->get('url.intended'));
+                    return redirect(session()->get('url.intended'));
                 }
                 return redirect()->route('account.profile');
 
@@ -91,5 +92,27 @@ class AuthController extends Controller
         $orderItems = OrderItem::where('order_id',$id)->get();
         $orderItemsCount = OrderItem::where('order_id',$id)->count();
         return view('front.account.orderDetail',compact('order','orderItems','orderItemsCount'));
+    }
+
+    public function wishlist() {
+        $wishlists = Wishlist::where('user_id',Auth::user()->id)->get();
+        return view('front.account.wishlist',compact('wishlists'));
+    }
+
+    public function removeProductWishlist(Request $request) {
+        $wishList = Wishlist::where('user_id',Auth::user()->id)->where('product_id',$request->productId)->first();
+
+        if($wishList == null) {
+            session()->flash('error','Product already removed from wishlist.');
+            return response()->json([
+                'status' => true,
+            ]);
+        } else {
+            Wishlist::where('user_id',Auth::user()->id)->where('product_id',$request->productId)->delete();
+            session()->flash('success','Product removed from wishlist successfully.');
+            return response()->json([
+                'status' => true,
+            ]);
+        }
     }
 }

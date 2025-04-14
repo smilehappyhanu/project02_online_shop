@@ -124,7 +124,7 @@ class CartController extends Controller
         }
         if (Auth::check() == false) {
              if(!session()->has('url.intended')){
-                 session(['url.intended' => url()->current()]);
+                 session(['url.intended' => url()->previous()]);
              }
             return redirect()->route('account.login');
         } 

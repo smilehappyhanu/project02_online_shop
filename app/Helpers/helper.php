@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\ProductImage;
+use App\Models\Product;
 use App\Models\Order;
 use App\Models\Country;
 use App\Mail\OrderEmail;
@@ -18,6 +19,10 @@ function getCategories () {
 
 function getProductImage($productId) {
     return ProductImage::where('product_id',$productId)->first();
+}
+
+function getProductInfo($productId) {
+    return Product::where('id',$productId)->first();
 }
 
 function orderEmail ($orderId, $userType="customer") {
