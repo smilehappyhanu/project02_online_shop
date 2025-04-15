@@ -57,6 +57,7 @@ Route::post('/get-order-summery',[CartController::class,'getOrderSummery'])->nam
 Route::post('/apply-discount',[CartController::class,'applyDiscount'])->name('front.applyDiscount');
 Route::post('/remove-discount',[CartController::class,'removeDiscount'])->name('front.removeDiscount');
 Route::post('/add-to-wishlist',[FrontController::class,'addToWishlist'])->name('front.addToWishlist');
+Route::get('/show-page/{slug}',[FrontController::class,'showStaticPage'])->name('front.showStaticPage');
 
 
 Route::group(['prefix' => 'account'],function(){

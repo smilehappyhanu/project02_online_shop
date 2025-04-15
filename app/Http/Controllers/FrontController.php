@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Page;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,5 +52,13 @@ class FrontController extends Controller
             'status' => true,
             'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> added to your wishlist successfully.</div>'
         ]);
+    }
+
+    public function showStaticPage($lug) {
+        $page = Page::where('slug',$lug)->first();
+        if($page == null) {
+            abort(404);
+        }
+        return view('front.page',compact('page'));
     }
 }
