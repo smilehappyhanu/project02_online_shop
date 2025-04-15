@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -154,7 +155,10 @@ Route::group(['prefix' => 'admin'],function(){
         Route::post('/orders/change-status/{id}',[OrderController::class,'changeOrderStatus'])->name('orders.changeOrderStatus');
         Route::post('/orders/send-email/{id}',[OrderController::class,'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
-
+        // User routes
+        Route::get('/users',[UserController::class,'index'])->name('users.index');
+        Route::get('/users/create',[UserController::class,'create'])->name('users.create');
+        Route::post('/users/store',[UserController::class,'store'])->name('users.store');
 
 
         // Common routes

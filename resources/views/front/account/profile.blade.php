@@ -18,7 +18,7 @@
                     @include('front.account.common.sidebar')
                 </div>
                 <div class="col-md-9">
-                    @include('admin.message')
+                    @include('front.message')
                     <div class="card">
                         <div class="card-header">
                             <h2 class="h5 mb-0 pt-2 pb-2">Personal Information</h2>
