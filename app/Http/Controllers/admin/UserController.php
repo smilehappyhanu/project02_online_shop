@@ -51,4 +51,65 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function edit ($userId) {
+        $user = User::find($userId);
+        if($user == null) {
+            session()->flash('error','User not found.');
+            return redirect()->route('users.index');
+        }
+        return view('admin.user.edit',compact('user'));
+    }
+
+    public function update (Request $request,$userId) {
+        $user = User::find($userId);
+        if($user == null) {
+            session()->flash('error','User not found.');
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$user->id.',id',
+            'phone' => 'required|numeric',
+            'password' => 'required|min:8|max:24',
+            'status' => 'required'
+        ]);
+        if($validator->passes()) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->phone = $request->phone;
+            $user->status = $request->status;
+            $user->save();
+
+            session()->flash('success','User updated successfully.');
+            return response()->json([
+                'status' => true,
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function destroy($id) {
+        $user = User::find($id);
+        if($user == null) {
+            session()->flash('error','User not found.');
+            return response()->json([
+                'status' => true,
+            ]);
+        }
+        $user->delete();
+        session()->flash('success','User deleted successfully.');
+            return response()->json([
+                'status' => true,
+        ]);
+    }
 }
