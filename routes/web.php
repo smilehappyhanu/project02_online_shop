@@ -16,6 +16,7 @@ use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -162,6 +163,12 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/users/{userId}/edit',[UserController::class,'edit'])->name('users.edit');
         Route::put('/users/{userId}/update',[UserController::class,'update'])->name('users.update');
         Route::delete('/users/{userId}/delete',[UserController::class,'destroy'])->name('users.delete');
+
+        // Pages routes
+        Route::get('/pages',[PageController::class,'index'])->name('pages.index');
+        Route::get('/pages/create',[PageController::class,'create'])->name('pages.create');
+        Route::post('/pages/store',[PageController::class,'store'])->name('pages.store');
+        Route::delete('/pages/{id}/delete',[PageController::class,'destroy'])->name('pages.delete');
 
 
         // Common routes
