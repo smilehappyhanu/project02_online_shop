@@ -195,5 +195,38 @@ class AuthController extends Controller
         }
     }
 
+    public function changePassword () {
+        return view('front.account.change-pw');
+    }
+
+    public function handleChangePw (Request $request) {
+        $validator = Validator::make($request->all(),[
+            'old_password' => 'required',
+            'new_password' => 'required|min:8|same:confirm_password',
+            'confirm_password' => 'required'
+        ]);
+        if($validator->passes()) {
+            $user = User::select('id','password')->where('id', Auth::user()->id)->first();
+            if(!Hash::check($request->old_password,$user->password)) {
+                session()->flash('error','Your old password is not correct, please try again.');
+                return response()->json([
+                    'status' => true,
+                ]);
+            }
+            User::where('id',$user->id)->update([
+                'password' => Hash::make($request->new_password)
+            ]);
+            session()->flash('success','You have updated password successfully.');
+            return response()->json([
+                'status' => true
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
     
 }
