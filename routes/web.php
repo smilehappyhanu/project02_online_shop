@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\DiscountCouponController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PageController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -175,6 +176,9 @@ Route::group(['prefix' => 'admin'],function(){
         Route::put('/pages/{id}/update',[PageController::class,'update'])->name('pages.update');
         Route::delete('/pages/{id}/delete',[PageController::class,'destroy'])->name('pages.delete');
 
+        // Setting routes
+        Route::get('/show-change-password-form',[SettingController::class,'showChangePasswordForm'])->name('admin.showChangePasswordForm');
+        Route::post('/handle-change-password',[SettingController::class,'handleChangePw'])->name('admin.handleChangePw');
 
         // Common routes
         Route::get('/getSlug',function(Request $request){
