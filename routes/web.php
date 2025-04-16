@@ -60,6 +60,10 @@ Route::post('/remove-discount',[CartController::class,'removeDiscount'])->name('
 Route::post('/add-to-wishlist',[FrontController::class,'addToWishlist'])->name('front.addToWishlist');
 Route::get('/show-page/{slug}',[FrontController::class,'showStaticPage'])->name('front.showStaticPage');
 Route::post('/send-contact-email',[FrontController::class,'sendContactEmail'])->name('front.sendContactEmail');
+Route::get('/forgot-password',[AuthController::class,'forgotPassword'])->name('front.forgotPassword');
+Route::post('/handle-mail-forgot-password',[AuthController::class,'handleSendMailForgotPw'])->name('front.handleSendMailForgotPw');
+Route::get('/reset-password-form/{token}',[AuthController::class,'showFormResetPw'])->name('front.showFormResetPw');
+Route::post('/handle-reset-password',[AuthController::class,'handleResetPw'])->name('front.handleResetPw');
 
 
 Route::group(['prefix' => 'account'],function(){
