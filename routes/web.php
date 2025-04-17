@@ -138,6 +138,8 @@ Route::group(['prefix' => 'admin'],function(){
         Route::get('/product-subcategories',[ProductSubCategoryController::class,'index'])->name('product-subcategories.index');
         Route::delete('/products/{product}',[ProductController::class,'destroy'])->name('products.delete');
         Route::get('/get-products',[ProductController::class,'getProducts'])->name('products.getProducts');
+        Route::get('/product-rating',[ProductController::class,'productRatings'])->name('products.productRatings');
+        Route::get('/change-status-rating',[ProductController::class,'changeRatingStatus'])->name('products.changeRatingStatus');
 
         // Image routes
         Route::post('/upload-temp-image',[TempImagesController::class,'create'])->name('temp-images.create');

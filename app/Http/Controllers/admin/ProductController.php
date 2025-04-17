@@ -8,6 +8,7 @@ use App\Models\SubCategory;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Image;
@@ -231,5 +232,27 @@ class ProductController extends Controller
             'tags' => $tempProduct,
             'status' => true
        ]);
+    }
+
+    public function productRatings(Request $request) {
+        $ratings = ProductRating::select('product_ratings.*','products.title as productTitle')->orderBy('product_ratings.created_at','DESC');
+        $ratings = $ratings->leftJoin('products','products.id','product_ratings.product_id');
+        $ratings = $ratings->where('products.title','like','%'.$request->keyword_search.'%');
+        $ratings = $ratings->orWhere('product_ratings.username','like','%'.$request->keyword_search.'%');
+        $ratings = $ratings->paginate(10);
+
+        return view('admin.products.rating',compact('ratings'));
+    }
+
+    public function changeRatingStatus (Request $request) {
+        $productRating = ProductRating::find($request->id);
+        $productRating->status = $request->status;
+        $productRating->save();
+
+        session()->flash('success','Status of rating changed successfully.');
+        return response()->json([
+            'status' => true,
+            'message' => 'Status of rating changed successfully.'
+        ]);
     }
 }
