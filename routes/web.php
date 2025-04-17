@@ -64,6 +64,7 @@ Route::get('/forgot-password',[AuthController::class,'forgotPassword'])->name('f
 Route::post('/handle-mail-forgot-password',[AuthController::class,'handleSendMailForgotPw'])->name('front.handleSendMailForgotPw');
 Route::get('/reset-password-form/{token}',[AuthController::class,'showFormResetPw'])->name('front.showFormResetPw');
 Route::post('/handle-reset-password',[AuthController::class,'handleResetPw'])->name('front.handleResetPw');
+Route::post('/handle-rating/{productId}',[ShopController::class,'saveRating'])->name('front.saveRating');
 
 
 Route::group(['prefix' => 'account'],function(){
